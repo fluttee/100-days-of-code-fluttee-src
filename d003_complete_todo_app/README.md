@@ -6,8 +6,8 @@ Complete Todo app part 1
 - [x] Add task to list
 - [x] Check to toggle done(UI only)
 - [x] Click to turn on notify(UI only)
-- [] More and more business function
-- [] Firestore support
+- [ ] More and more business function
+- [ ] Firestore support
 
 ## Final app
 
