@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:d003_complete_todo_app/models/task.dart';
+import 'package:intl/intl.dart';
 
 /// The base class for the different types of items the list can contain.
 abstract class BaseTile {
@@ -27,8 +28,14 @@ class HeadingTile implements BaseTile {
 /// A ListItem that contains data to display a message.
 class TaskTile implements BaseTile {
   final Task task;
+  final Function checkedCallback;
+  final Function notifiedCallback;
 
-  TaskTile({this.task});
+  TaskTile({
+    this.task,
+    this.checkedCallback,
+    this.notifiedCallback,
+  });
 
   Widget buildTile(BuildContext context) {
     return IntrinsicHeight(
@@ -48,14 +55,20 @@ class TaskTile implements BaseTile {
               child: ListTile(
                 title: Row(
                   children: [
-                    Image.asset(task.toggleDone
-                        ? "assets/images/checked.png"
-                        : "assets/images/checked-empty.png"),
+                    InkWell(
+                      onTap: checkedCallback,
+                      child: Image.asset(task.toggleDone
+                          ? "assets/images/checked.png"
+                          : "assets/images/checked-empty.png"),
+                    ),
                     SizedBox(width: 10.0),
                     Text(
-                      task.dateTime,
+                      DateFormat.jm().format(task.dateTime),
                       style: TextStyle(
                         color: Colors.grey,
+                        decoration: task.toggleDone
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
                       ),
                     ),
                     SizedBox(width: 10.0),
@@ -63,16 +76,23 @@ class TaskTile implements BaseTile {
                       task.title,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.deepPurple,
+                        color:
+                            task.toggleDone ? Colors.grey : Colors.deepPurple,
+                        decoration: task.toggleDone
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
                       ),
                     ),
                   ],
                 ),
-                trailing: Image.asset(
-                  task.reminder
-                      ? "assets/images/bell-small-yellow.png"
-                      : "assets/images/bell-small.png",
-                  scale: 0.8,
+                trailing: InkWell(
+                  onTap: notifiedCallback,
+                  child: Image.asset(
+                    task.reminder
+                        ? "assets/images/bell-small-yellow.png"
+                        : "assets/images/bell-small.png",
+                    scale: 0.8,
+                  ),
                 ),
               ),
             ),

@@ -1,6 +1,8 @@
+import 'package:d003_complete_todo_app/main.dart';
+
 class Task {
   String title;
-  String dateTime;
+  DateTime dateTime;
   bool toggleDone;
   int categoryColor;
   bool reminder;
@@ -9,7 +11,7 @@ class Task {
     this.title,
     this.dateTime,
     this.toggleDone = false,
-    this.categoryColor,
-    this.reminder,
+    this.categoryColor = kButtonColor,
+    this.reminder = false,
   });
 }
