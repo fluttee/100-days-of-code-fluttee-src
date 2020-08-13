@@ -21,8 +21,29 @@ class _HomeScreenState extends State<HomeScreen> {
 //            ),
 //          ),
 //  );
-  final items = List<BaseTile>();
+  var items = List<BaseTile>();
   int selectedTabIndex = 0;
+  bool showReminder = true;
+  TextEditingController _controller;
+  int categoryIndex = 0;
+  var category = {
+    0: Colors.yellow,
+    1: Colors.green,
+    2: Colors.red,
+    3: Colors.blue,
+    4: Colors.orange,
+  };
+
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,7 +134,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  bool showReminder = true;
   _buildTopSection() {
     return DefaultTextStyle(
       style: TextStyle(
@@ -329,28 +349,6 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           );
   }
-
-  TextEditingController _controller;
-
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
-  }
-
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  int categoryIndex = 0;
-
-  var category = {
-    0: Colors.yellow,
-    1: Colors.green,
-    2: Colors.red,
-    3: Colors.blue,
-    4: Colors.orange,
-  };
 
   _showBottomSheet() {
     String _title;
