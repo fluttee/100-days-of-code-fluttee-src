@@ -1,8 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:d005_complete_todo_app/constants.dart';
 import 'package:d005_complete_todo_app/widgets/category_tile.dart';
 import 'package:d005_complete_todo_app/widgets/task_tile.dart';
 import 'package:d005_complete_todo_app/models/task.dart';
-import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
 //            ),
 //          ),
 //  );
-  var items = List<BaseTile>();
+  var tasks = List<Task>();
   int selectedTabIndex = 0;
   bool showReminder = true;
   TextEditingController _controller;
@@ -300,7 +300,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _buildTaskList() {
-    return items.length == 0
+    return tasks.length == 0
         ? Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
@@ -342,10 +342,27 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         : ListView.builder(
             padding: EdgeInsets.only(top: 10.0),
-            itemCount: items.length,
+            itemCount: tasks.length,
             itemBuilder: (BuildContext context, int index) {
-              final item = items[index];
-              return item.buildTile(context);
+              final _task = tasks[index];
+              return TaskTile(
+                task: _task,
+                checkedCallback: () {
+                  setState(() {
+                    _task.toggleDone = !_task.toggleDone;
+                  });
+                },
+                notifiedCallback: () {
+                  setState(() {
+                    _task.reminder = !_task.reminder;
+                  });
+                },
+                deleteCallback: () {
+                  setState(() {
+                    tasks.removeAt(index);
+                  });
+                },
+              ).buildTile(context);
             },
           );
   }
@@ -540,26 +557,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               RaisedButton(
                                 onPressed: () {
                                   if (_title != null) {
-                                    var _task = Task(
+                                    var task = Task(
                                         title: _title,
                                         dateTime: DateTime.now(),
                                         categoryColor: categoryIndex);
-                                    final taskTile = TaskTile(
-                                        task: _task,
-                                        checkedCallback: () {
-                                          setState(() {
-                                            _task.toggleDone =
-                                                !_task.toggleDone;
-                                          });
-                                        },
-                                        notifiedCallback: () {
-                                          setState(() {
-                                            _task.reminder = !_task.reminder;
-                                          });
-                                        });
 
                                     setState(() {
-                                      items.add(taskTile);
+                                      tasks.add(task);
                                     });
                                   }
                                   Navigator.pop(context);
