@@ -33,9 +33,9 @@ class WelcomeScreen extends StatelessWidget {
                       Text(
                         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque erat in blandit luctus.',
                         style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: 'opensans'),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w400,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -82,7 +82,9 @@ class WelcomeScreen extends StatelessWidget {
                         child: const Text(
                           'Get Started',
                           style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w500),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),

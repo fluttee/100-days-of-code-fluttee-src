@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+const kBackgroundColor = 0xFFF9FDFF;
 const kButtonColor = 0xFFE82BAB;
 const kBottomAppBarIconSize = 30.0;
 const kTopSectionColor1 = 0xFF4274DA;

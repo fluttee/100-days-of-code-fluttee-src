@@ -249,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Color(kBackgroundColor),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20.0),
             topRight: Radius.circular(20.0),
@@ -262,8 +262,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _buildCategoryList() {
     return Container(
-      child: Center(
-        child: Text("Category list"),
+      child: GridView.count(
+        // Create a grid with 2 columns. If you change the scrollDirection to
+        // horizontal, this produces 2 rows.
+        crossAxisCount: 2,
+        // Generate 100 widgets that display their index in the List.
+        children: List.generate(6, (index) {
+          return CategoryTile(
+            title: "Title $index",
+            color: category[index],
+            tasksCount: 0,
+            iconPath: "assets/images/icon-user.png",
+          ).buildCategory(context);
+        }),
       ),
     );
   }
@@ -448,7 +459,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
                                   children: <Widget>[
-                                    CategoryTile(
+                                    CategoryTileEx(
                                       color: category[0],
                                       title: "Personal",
                                       onPress: () {
@@ -458,7 +469,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       },
                                       isSelected: categoryIndex == 0,
                                     ).buildCategory(context),
-                                    CategoryTile(
+                                    CategoryTileEx(
                                       color: category[1],
                                       title: "Work",
                                       onPress: () {
@@ -468,7 +479,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       },
                                       isSelected: categoryIndex == 1,
                                     ).buildCategory(context),
-                                    CategoryTile(
+                                    CategoryTileEx(
                                       color: category[2],
                                       title: "Meeting",
                                       onPress: () {
@@ -478,7 +489,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       },
                                       isSelected: categoryIndex == 2,
                                     ).buildCategory(context),
-                                    CategoryTile(
+                                    CategoryTileEx(
                                       color: category[3],
                                       title: "Study",
                                       onPress: () {
@@ -488,7 +499,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       },
                                       isSelected: categoryIndex == 3,
                                     ).buildCategory(context),
-                                    CategoryTile(
+                                    CategoryTileEx(
                                       color: category[4],
                                       title: "Shopping",
                                       onPress: () {
