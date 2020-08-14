@@ -10,18 +10,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-//  final items = List<BaseTile>.generate(
-//    6,
-//    (i) => i % 6 == 0
-//        ? HeadingTile(title: "Heading $i")
-//        : TaskTile(
-//            task: Task(
-//              dateTime: DateFormat.jm().format(DateTime.now()),
-//              title: "Title $i",
-//            ),
-//          ),
-//  );
-  var tasks = List<Task>();
+  Tasks tasks = Tasks();
   int selectedTabIndex = 0;
   bool showReminder = true;
   TextEditingController _controller;
@@ -344,7 +333,7 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.only(top: 10.0),
             itemCount: tasks.length,
             itemBuilder: (BuildContext context, int index) {
-              final _task = tasks[index];
+              final _task = tasks.elementAt(index);
               return TaskTile(
                 task: _task,
                 checkedCallback: () {
