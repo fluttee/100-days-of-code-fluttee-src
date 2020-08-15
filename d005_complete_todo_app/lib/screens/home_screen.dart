@@ -35,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('rebuild home screen');
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -341,11 +342,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     _task.toggleDone = !_task.toggleDone;
                   });
                 },
-                notifiedCallback: () {
-                  setState(() {
-                    _task.reminder = !_task.reminder;
-                  });
-                },
+                notifiedCallback: _task.toggleDone != true
+                    ? () {
+                        setState(() {
+                          _task.reminder = !_task.reminder;
+                        });
+                      }
+                    : () {},
                 deleteCallback: () {
                   setState(() {
                     tasks.removeAt(index);
@@ -363,251 +366,263 @@ class _HomeScreenState extends State<HomeScreen> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
-        return SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                Positioned(
-                  top: MediaQuery.of(context).size.height / 25,
-                  child: Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.elliptical(175, 30),
+        print('rebuild bottom sheet');
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setModalState) {
+            return SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    Positioned(
+                      top: MediaQuery.of(context).size.height / 25,
+                      child: Container(
+                        height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.elliptical(175, 30),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                Positioned(
-                  child: Column(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          width: 56,
-                          height: 56,
-                          child: Image.asset("assets/images/fab-delete.png"),
-                          decoration: BoxDecoration(
-                            color: Colors.pink,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(50.0),
-                            ),
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: <Color>[
-                                PurpleLight,
-                                PurpleDark,
-                              ],
+                    Positioned(
+                      child: Column(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              width: 56,
+                              height: 56,
+                              child:
+                                  Image.asset("assets/images/fab-delete.png"),
+                              decoration: BoxDecoration(
+                                color: Colors.pink,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(50.0),
+                                ),
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: <Color>[
+                                    PurpleLight,
+                                    PurpleDark,
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      Container(
-                        child: Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Text(
-                                'Add new task',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Container(
-                                width: MediaQuery.of(context).size.width / 1.2,
-                                child: TextFormField(
-                                  autofocus: true,
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "Enter a task",
-                                  ),
-                                  onChanged: (value) {
-                                    _title = value;
-                                  },
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Container(
-                                width: MediaQuery.of(context).size.width / 1.2,
-                                height: 60,
-                                padding: EdgeInsets.symmetric(vertical: 15),
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    top: BorderSide(
-                                      width: 1.0,
-                                      color: Colors.grey,
-                                    ),
-                                    bottom: BorderSide(
-                                      width: 1.0,
-                                      color: Colors.grey,
+                          Container(
+                            child: Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Text(
+                                    'Add new task',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                ),
-                                child: ListView(
-                                  scrollDirection: Axis.horizontal,
-                                  shrinkWrap: true,
-                                  children: <Widget>[
-                                    CategoryTileEx(
-                                      color: category[0],
-                                      title: "Personal",
-                                      onPress: () {
-                                        setState(() {
-                                          categoryIndex = 0;
-                                        });
-                                      },
-                                      isSelected: categoryIndex == 0,
-                                    ).buildCategory(context),
-                                    CategoryTileEx(
-                                      color: category[1],
-                                      title: "Work",
-                                      onPress: () {
-                                        setState(() {
-                                          categoryIndex = 1;
-                                        });
-                                      },
-                                      isSelected: categoryIndex == 1,
-                                    ).buildCategory(context),
-                                    CategoryTileEx(
-                                      color: category[2],
-                                      title: "Meeting",
-                                      onPress: () {
-                                        setState(() {
-                                          categoryIndex = 2;
-                                        });
-                                      },
-                                      isSelected: categoryIndex == 2,
-                                    ).buildCategory(context),
-                                    CategoryTileEx(
-                                      color: category[3],
-                                      title: "Study",
-                                      onPress: () {
-                                        setState(() {
-                                          categoryIndex = 3;
-                                        });
-                                      },
-                                      isSelected: categoryIndex == 3,
-                                    ).buildCategory(context),
-                                    CategoryTileEx(
-                                      color: category[4],
-                                      title: "Shopping",
-                                      onPress: () {
-                                        setState(() {
-                                          categoryIndex = 4;
-                                        });
-                                      },
-                                      isSelected: categoryIndex == 4,
-                                    ).buildCategory(context),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: 20),
-                              Container(
-                                width: MediaQuery.of(context).size.width / 1.2,
-                                child: Text(
-                                  'Choose date',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Container(
-                                width: MediaQuery.of(context).size.width / 1.2,
-                                child: Row(
-                                  children: <Widget>[
-                                    Text(
-                                      'Today, 19: - 21:00',
-                                      textAlign: TextAlign.left,
+                                  SizedBox(height: 10),
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.2,
+                                    child: TextFormField(
+                                      autofocus: true,
                                       style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600),
+                                        fontSize: 22,
+                                        fontStyle: FontStyle.normal,
+                                      ),
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: "Enter a task",
+                                      ),
+                                      onChanged: (value) {
+                                        _title = value;
+                                      },
                                     ),
-                                    SizedBox(width: 5),
-                                    Icon(Icons.keyboard_arrow_down),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: 20),
-                              RaisedButton(
-                                onPressed: () {
-                                  if (_title != null) {
-                                    var task = Task(
-                                        title: _title,
-                                        dateTime: DateTime.now(),
-                                        categoryColor: categoryIndex);
-
-                                    setState(() {
-                                      tasks.add(task);
-                                    });
-                                  }
-                                  Navigator.pop(context);
-                                },
-                                textColor: Colors.white,
-                                padding: const EdgeInsets.all(0.0),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.2,
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: <Color>[
-                                        Color(kTopSectionColor1),
-                                        Color(kTopSectionColor2),
+                                  ),
+                                  SizedBox(height: 5),
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.2,
+                                    height: 60,
+                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        top: BorderSide(
+                                          width: 1.0,
+                                          color: Colors.grey,
+                                        ),
+                                        bottom: BorderSide(
+                                          width: 1.0,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ),
+                                    child: ListView(
+                                      scrollDirection: Axis.horizontal,
+                                      shrinkWrap: true,
+                                      children: <Widget>[
+                                        CategoryTileEx(
+                                          color: category[0],
+                                          title: "Personal",
+                                          onPress: () {
+                                            setModalState(() {
+                                              categoryIndex = 0;
+                                            });
+                                          },
+                                          isSelected: categoryIndex == 0,
+                                        ).buildCategory(context),
+                                        CategoryTileEx(
+                                          color: category[1],
+                                          title: "Work",
+                                          onPress: () {
+                                            setModalState(() {
+                                              categoryIndex = 1;
+                                            });
+                                          },
+                                          isSelected: categoryIndex == 1,
+                                        ).buildCategory(context),
+                                        CategoryTileEx(
+                                          color: category[2],
+                                          title: "Meeting",
+                                          onPress: () {
+                                            setModalState(() {
+                                              categoryIndex = 2;
+                                            });
+                                          },
+                                          isSelected: categoryIndex == 2,
+                                        ).buildCategory(context),
+                                        CategoryTileEx(
+                                          color: category[3],
+                                          title: "Study",
+                                          onPress: () {
+                                            setModalState(() {
+                                              categoryIndex = 3;
+                                            });
+                                          },
+                                          isSelected: categoryIndex == 3,
+                                        ).buildCategory(context),
+                                        CategoryTileEx(
+                                          color: category[4],
+                                          title: "Shopping",
+                                          onPress: () {
+                                            setModalState(() {
+                                              categoryIndex = 4;
+                                            });
+                                          },
+                                          isSelected: categoryIndex == 4,
+                                        ).buildCategory(context),
                                       ],
                                     ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
+                                  ),
+                                  SizedBox(height: 20),
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.2,
+                                    child: Text(
+                                      'Choose date',
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(fontSize: 12),
                                     ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.blue,
-                                        blurRadius: 2.0,
-                                        spreadRadius: 1.0,
-                                        offset: Offset(0.0, 0.0),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.2,
+                                    child: Row(
+                                      children: <Widget>[
+                                        Text(
+                                          'Today, 19: - 21:00',
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Icon(Icons.keyboard_arrow_down),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: 20),
+                                  RaisedButton(
+                                    onPressed: () {
+                                      if (_title != null) {
+                                        var task = Task(
+                                          title: _title,
+                                          dateTime: DateTime.now(),
+                                          categoryColor:
+                                              category[categoryIndex],
+                                        );
+
+                                        setState(() {
+                                          tasks.add(task);
+                                        });
+                                      }
+                                      Navigator.pop(context);
+                                    },
+                                    textColor: Colors.white,
+                                    padding: const EdgeInsets.all(0.0),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width /
+                                          1.2,
+                                      height: 60,
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: <Color>[
+                                            Color(kTopSectionColor1),
+                                            Color(kTopSectionColor2),
+                                          ],
+                                        ),
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(8.0),
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.blue,
+                                            blurRadius: 2.0,
+                                            spreadRadius: 1.0,
+                                            offset: Offset(0.0, 0.0),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                                  child: Center(
-                                    child: const Text(
-                                      'Add task',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 10, 20, 10),
+                                      child: Center(
+                                        child: const Text(
+                                          'Add task',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
+                                  SizedBox(height: 20),
+                                ],
                               ),
-                              SizedBox(height: 20),
-                            ],
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         );
       },
     );

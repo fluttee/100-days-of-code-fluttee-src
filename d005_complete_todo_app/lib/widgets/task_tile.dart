@@ -54,7 +54,7 @@ class TaskTile implements BaseTile {
             children: <Widget>[
               Expanded(
                 child: Container(
-                  color: Color(task.categoryColor),
+                  color: task.categoryColor,
                 ),
               ),
               Expanded(
